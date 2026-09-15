@@ -1,0 +1,46 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### nginx：运行日志（每次请求都会写入，持续增长，绝不能提交） ###
+nginx-1.18.0/logs/
+
+### nginx：第三方二进制与官方文档（可重新下载） ###
+nginx-1.18.0/nginx.exe
+nginx-1.18.0/docs/
+
+### nginx：前端静态资源（由课程单独提供，不进本仓库） ###
+nginx-1.18.0/html/hmdp/
+
+### agent 工作台中的一次性探针脚本 ###
+.workbuddy/tmp/
