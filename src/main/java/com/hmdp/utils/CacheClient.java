@@ -8,6 +8,7 @@ import cn.hutool.json.JSONUtil;
 import com.hmdp.entity.Shop;
 import io.netty.util.internal.StringUtil;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.ExecutorService;
@@ -17,6 +18,8 @@ import java.util.function.Function;
 
 import static com.hmdp.utils.RedisConstants.*;
 
+
+@Component
 public class CacheClient {
 
     private final StringRedisTemplate stringRedisTemplate;
