@@ -47,13 +47,13 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
         //缓存穿透
         //Lambda 表达式和方法引用（Method Reference）的转换关系
         // id2 -> getById(id2)可以写成this::getById,但是要满足条件：Lambda 里面调用的方法，参数和返回值必须与目标函数式接口的方法完全匹配
-//        Shop shop = cacheClient
-//                .queryWithPassThrough(CACHE_SHOP_KEY, id, Shop.class, this::getById, CACHE_SHOP_TTL, TimeUnit.MINUTES);
+        Shop shop = cacheClient
+                .queryWithPassThrough(CACHE_SHOP_KEY, id, Shop.class, this::getById, CACHE_SHOP_TTL, TimeUnit.MINUTES);
 
 
         //互斥锁解决缓存击穿
-        Shop shop = cacheClient.queryWithLogicalExpire(
-                CACHE_SHOP_KEY, id, Shop.class, this::getById, CACHE_SHOP_TTL, TimeUnit.MINUTES);
+//        Shop shop = cacheClient.queryWithLogicalExpire(
+//                CACHE_SHOP_KEY, id, Shop.class, this::getById, CACHE_SHOP_TTL, TimeUnit.MINUTES);
 
         //逻辑过期解决缓存击穿
         //Shop shop = queryWithLogicalExpire(id);
