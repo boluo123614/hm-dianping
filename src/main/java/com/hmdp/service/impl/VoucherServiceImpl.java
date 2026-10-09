@@ -52,8 +52,12 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
         seckillVoucher.setStock(voucher.getStock());
         seckillVoucher.setBeginTime(voucher.getBeginTime());
         seckillVoucher.setEndTime(voucher.getEndTime());
+        //保存秒杀券信息到数据库中
         seckillVoucherService.save(seckillVoucher);
-        //保存秒杀券信息到Redis中
+        // 初始化 Lua 资格判断使用的 Redis 库存，例如优惠券 13 的 key 为 seckill:stock:13。
+        // StringRedisTemplate 存储字符串，所以通过 String.valueOf 把库存数量转换成字符串。
+        // MySQL 和 Redis 各保存一份库存；秒杀时先预扣 Redis，再由后台下单线程扣 MySQL 库存。
+        // 当前数据库事务不覆盖 Redis 写入，数据库回滚不会自动撤销此处的 SET。
         stringRedisTemplate.opsForValue().set(SECKILL_STOCK_KEY + voucher.getId(), String.valueOf(voucher.getStock()));
     }
 }
