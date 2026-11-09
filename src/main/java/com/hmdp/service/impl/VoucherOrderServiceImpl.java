@@ -139,8 +139,13 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
                     }
                     handleStreamRecord(records.get(0));
                 } catch (Exception e) {
+                    // Redis 会包装中断异常；同时检查执行器状态，兼容中断标记被底层清除的情况。
+                    if (SECKILL_ORDER_EXECUTOR.isShutdown() || Thread.currentThread().isInterrupted()) {
+                        log.debug("订单消费线程已停止");
+                        return;
+                    }
                     // 不 ACK：消息保留在 pending-list，下一轮先重试它，不会自动恢复 Redis 库存。
-                    log.error("处理订单异常，消息保留在待确认列表中", e);
+                    log.error("订单消息读取或处理异常，已读取但未确认的消息将在后续重试", e);
                     try {
                         // 数据库或 Redis 故障时稍后重试，避免同一条失败消息立即反复处理。
                         Thread.sleep(500);
